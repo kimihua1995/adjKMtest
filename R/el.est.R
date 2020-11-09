@@ -171,10 +171,10 @@ el.est <- function(y,delta,treat,x,psix,treat.select,t,get.sd=TRUE,Nboot=500){
     aa=range(pi)[1];aa1=range(pi)[2]
     if(aa<=0||aa1>=1) next
     pi1<-pi[treat==1];
-    s1<-rbind(s1,el.est.old(y1,delta1,pi1,wt));
+    s1<-rbind(s1,el.est.old(y1,delta1,pi1,t));
 
     pi0<-pi[treat==0];
-    s0<-rbind(s0,el.est.old(y0,delta0,pi0,wt))
+    s0<-rbind(s0,el.est.old(y0,delta0,pi0,t))
   }
   s1.sd=apply(s1,2,sd); s0.sd=apply(s0,2,sd);
   return(list(St = suvdf, sd = treat.select*s1.sd + (1-treat.select)*s0.sd))
