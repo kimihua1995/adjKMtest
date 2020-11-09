@@ -26,7 +26,10 @@ boot.sd<-function(Y1,Delta1,X1,Treat1,Psix1,Nboot,wt)
   }
   s1.sd=apply(s1,2,sd); s0.sd=apply(s0,2,sd);
   Dif=s1-s0; Dif.sd=apply(Dif,2,sd)
-  return(Dif.sd)
+  s1.CI=apply(s1,2,quantile,probs=c(.025,.975))
+  s0.CI=apply(s0,2,quantile,probs=c(.025,.975))
+  Dif.CI=apply(Dif,2,quantile,probs=c(.025,.975))
+  return(list(sd=Dif.sd, s1.CI=s1.CI, s0.CI=s0.CI, Dif.CI=Dif.CI))
 }
 
 
@@ -42,7 +45,7 @@ el.est.table <- function(y,delta,treat,x,psix,t,Nboot=500){
   S1.est <- S1$St; S1.sd <- S1$sd
   S0.est <- S0$St; S0.sd <- S0$sd
 
-  Dif.est <- S1.est - S0.est; Dif.sd <- boot.sd(y,delta,x,treat,psix,Nboot,t)
+  Dif.est <- S1.est - S0.est; Dif.sd <- boot.sd(y,delta,x,treat,psix,Nboot,t)$sd
 
   table.est <- round(rbind(S1.est,S0.est,Dif.est),3)
   table.sd <- round(rbind(S1.sd,S0.sd,Dif.sd),3)
