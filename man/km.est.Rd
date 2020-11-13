@@ -1,7 +1,7 @@
 \name{km.est}
 \alias{km.est}
 \title{Kaplan-Meier Estimates}
-\description{Estimate survival probability by standard KM method}
+\description{Estimate survival probabilities by standard KM method}
 \usage{
 km.est(y,delta,treat,treat.select,t)
 }

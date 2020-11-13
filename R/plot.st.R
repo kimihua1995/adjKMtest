@@ -1,6 +1,8 @@
 # plot the estimates of survival functions for each method
 # add S1.est-S0.est
 # add 95% CI
+# add shade
+# choose alpha level
 
 plot.st <- function(y,delta,treat,x,psix=x,t,method = c("KM","IPTW","EL"),Nboot=500){
   if (method == "KM"){

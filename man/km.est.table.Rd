@@ -1,7 +1,7 @@
 \name{km.est.table}
 \alias{km.est.table}
 \title{Table for Kaplan-Meier Estimates}
-\description{Generate table from estimated survival probability by standard KM method for treatment, control and their difference. Require \code{formattable} package to run.}
+\description{Generate table from estimated survival probabilities by standard KM method for treatment, control and their difference. Require \code{formattable} package to run.}
 \usage{
 km.est.table(y,delta,treat,t)
 }

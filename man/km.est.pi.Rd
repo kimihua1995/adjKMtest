@@ -1,15 +1,15 @@
 \name{km.est.pi}
 \alias{km.est.pi}
 \title{Inverse Probabilty of Treatment Weighting}
-\description{Estimate survival probability by IPTW}
+\description{Estimate survival probabilities by IPTW}
 \usage{
-km.est.pi(y,delta,treat,ex,treat.select,t)
+km.est.pi(y,delta,treat,x,treat.select,t)
 }
 \arguments{
 \item{y}{a numeric vector of observed time}
 \item{delta}{a factor vector of indicator for events}
 \item{treat}{a factor vector of the treatment indicator}
-\item{ex}{a numeric vector of propensity score}
+\item{x}{an optional covariance matrix containing the variables in the model}
 \item{treat.select}{a value of 1 (treatment) or 0 (control)}
 \item{t}{a numeric vector of time points for estimation}
 }
