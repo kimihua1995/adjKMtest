@@ -39,8 +39,8 @@ boot.sd<-function(Y1,Delta1,X1,Treat1,Psix1,Nboot,wt,alpha=0.05)
 
 el.est.table <- function(y,delta,treat,x,psix,t,Nboot=500){
 
-  S1 <- el.est(y,delta,treat,x,psix,1,t)
-  S0 <- el.est(y,delta,treat,x,psix,0,t)
+  S1 <- el.est(y,delta,treat,x,psix,1,t,TRUE,Nboot)
+  S0 <- el.est(y,delta,treat,x,psix,0,t,TRUE,Nboot)
 
   S1.est <- S1$St; S1.sd <- S1$sd
   S0.est <- S0$St; S0.sd <- S0$sd
