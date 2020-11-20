@@ -16,12 +16,12 @@ km.est.pi.table <- function(y,delta,treat,x,t){
 
   require(formattable)
 
-  table <- matrix(NA,nrow = 3,ncol = length(t)+2)
-  table[,1] <- rep("IPW",3)
-  table[,2] <- c("treatment","control","Difference")
-  colnames(table) <- c("Method","Parameter",paste0("t=",t))
+  table <- matrix(NA,nrow = length(t), ncol = 4)
+  colnames(table) <- c("Method:IPTW","treatment","control","Difference")
   for (i in 1:length(t)){
-    table[,i+2] <- paste(table.est[,i],"(",table.sd[,i],")")
+    table[i,] <- c(paste0("t=",t[i]),
+                   paste(format(table.est[,i],nsmall = 3),"(",
+                         format(table.sd[,i],nsmall = 3),")"))
   }
   table <- as.data.frame(table)
 

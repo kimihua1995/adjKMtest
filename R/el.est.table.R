@@ -1,4 +1,4 @@
-boot.sd<-function(Y1,Delta1,X1,Treat1,Psix1,Nboot,wt)
+boot.sd<-function(Y1,Delta1,X1,Treat1,Psix1,Nboot,wt,alpha=0.05)
 {#Y1=y;Delta1=delta;X1=x;Treat1=treat;Psix1=psix;
 
 
@@ -26,9 +26,9 @@ boot.sd<-function(Y1,Delta1,X1,Treat1,Psix1,Nboot,wt)
   }
   s1.sd=apply(s1,2,sd); s0.sd=apply(s0,2,sd);
   Dif=s1-s0; Dif.sd=apply(Dif,2,sd)
-  s1.CI=apply(s1,2,quantile,probs=c(.025,.975))
-  s0.CI=apply(s0,2,quantile,probs=c(.025,.975))
-  Dif.CI=apply(Dif,2,quantile,probs=c(.025,.975))
+  s1.CI=apply(s1,2,quantile,probs=c(alpha/2, 1-alpha/2))
+  s0.CI=apply(s0,2,quantile,probs=c(alpha/2, 1-alpha/2))
+  Dif.CI=apply(Dif,2,quantile,probs=c(alpha/2, 1-alpha/2))
   return(list(sd=Dif.sd, s1.CI=s1.CI, s0.CI=s0.CI, Dif.CI=Dif.CI))
 }
 
@@ -53,12 +53,12 @@ el.est.table <- function(y,delta,treat,x,psix,t,Nboot=500){
 
   require(formattable)
 
-  table <- matrix(NA,nrow = 3,ncol = length(t)+2)
-  table[,1] <- rep("EL",3)
-  table[,2] <- c("treatment","control","Difference")
-  colnames(table) <- c("Method","Parameter",paste0("t=",t))
+  table <- matrix(NA,nrow = length(t), ncol = 4)
+  colnames(table) <- c("Method:EL","treatment","control","Difference")
   for (i in 1:length(t)){
-    table[,i+2] <- paste(table.est[,i],"(",table.sd[,i],")")
+    table[i,] <- c(paste0("t=",t[i]),
+                   paste(format(table.est[,i],nsmall = 3),"(",
+                         format(table.sd[,i],nsmall = 3),")"))
   }
   table <- as.data.frame(table)
 

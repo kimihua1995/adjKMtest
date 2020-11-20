@@ -1,10 +1,8 @@
 # plot the estimates of survival functions for each method
-# add S1.est-S0.est
-# add 95% CI
-# add shade
-# choose alpha level
 
-plot.st <- function(y,delta,treat,x,psix=x,t,method = c("KM","IPTW","EL"),Nboot=500){
+
+plot.st <- function(y,delta,treat,x,psix=x,t,method = c("KM","IPTW","EL"),
+                    Nboot=500,alpha=0.05){
   if (method == "KM"){
     S1 <- km.est(y,delta,treat,1,t)
     S0 <- km.est(y,delta,treat,0,t)
@@ -29,7 +27,7 @@ plot.st <- function(y,delta,treat,x,psix=x,t,method = c("KM","IPTW","EL"),Nboot=
     S1.est <- S1$St
     S0.est <- S0$St
     Dif.est <- S1.est - S0.est
-    boot <- boot.sd(y,delta,x,treat,psix,Nboot,t)
+    boot <- boot.sd(y,delta,x,treat,psix,Nboot,t,alpha)
     S1.CI <- boot$s1.CI
     S0.CI <- boot$s0.CI
     Dif.CI <- boot$Dif.CI
@@ -61,19 +59,19 @@ plot.st <- function(y,delta,treat,x,psix=x,t,method = c("KM","IPTW","EL"),Nboot=
          main = paste0("Estimates of S(t) and ", expression(Delta(t))," by ",method),
          xlab = "t",ylab = "S(t)",
          type = "l",lwd = 3,lty=1,cex.lab=1.5,cex.axis=1.5,cex.main=1.5)
-    lines(x=t,y=S1.est+qnorm(.975)*S1.sd, lwd=2, lty=3, col = "light blue")
-    lines(x=t,y=S1.est-qnorm(.975)*S1.sd, lwd=2, lty=3, col = "light blue")
+    lines(x=t,y=S1.est+qnorm(1-alpha/2)*S1.sd, lwd=2, lty=3, col = "light blue")
+    lines(x=t,y=S1.est-qnorm(1-alpha/2)*S1.sd, lwd=2, lty=3, col = "light blue")
     lines(x=t,y=S0.est, col = rgb(1,0,0,1/2), lwd = 3, lty=1)
-    lines(x=t,y=S0.est+qnorm(.975)*S0.sd, lwd=2, lty=3, col = "light coral")
-    lines(x=t,y=S0.est-qnorm(.975)*S0.sd, lwd=2, lty=3, col = "light coral")
+    lines(x=t,y=S0.est+qnorm(1-alpha/2)*S0.sd, lwd=2, lty=3, col = "light coral")
+    lines(x=t,y=S0.est-qnorm(1-alpha/2)*S0.sd, lwd=2, lty=3, col = "light coral")
     legend("bottomleft", c("treatment","control"),
            fill = rgb(0:1,0,1:0,1/2), bty = 'n', border = NA,cex=1.5)
 
     plot(x=t,y=Dif.est,xlim = c(min(t),max(t)),ylim = c(-0.5,0.5),col = "orange",
          ylab = expression(Delta(t)), xlab = "t",
          type = "l",lwd = 2,lty=1,cex.lab=1.5,cex.axis=1.5,cex.main=1.5)
-    lines(x=t,y=Dif.est+qnorm(.975)*Dif.sd, lwd=2, lty=3, col = "light salmon")
-    lines(x=t,y=Dif.est-qnorm(.975)*Dif.sd, lwd=2, lty=3, col = "light salmon")
+    lines(x=t,y=Dif.est+qnorm(1-alpha/2)*Dif.sd, lwd=2, lty=3, col = "light salmon")
+    lines(x=t,y=Dif.est-qnorm(1-alpha/2)*Dif.sd, lwd=2, lty=3, col = "light salmon")
     abline(h=0, lty=2,lwd=2)
   }
 }
