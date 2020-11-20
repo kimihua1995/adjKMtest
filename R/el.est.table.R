@@ -1,7 +1,7 @@
 boot.sd<-function(Y1,Delta1,X1,Treat1,Psix1,Nboot,wt,alpha=0.05)
 {#Y1=y;Delta1=delta;X1=x;Treat1=treat;Psix1=psix;
 
-
+  require(MASS)
   s1=NULL;s0=NULL
   n=length(Y1)
   for (i in 1:Nboot)

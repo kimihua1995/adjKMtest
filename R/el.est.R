@@ -105,6 +105,7 @@ estimator.pi<-function(y,delta,treat,x,psix)
 }
 
 el.est.old <- function(y,delta,pi,t){
+  require(MASS)
   n=length(y)
   m=length(t)
   z0=y[delta==1]
@@ -127,6 +128,7 @@ el.est.old <- function(y,delta,pi,t){
 ##########################################
 # estimate S(t) and standard deviation by EL
 el.est <- function(y,delta,treat,x,psix,treat.select,t,get.sd=TRUE,Nboot=500){
+  require(MASS)
   Y1=y;Delta1=delta;X1=x;Treat1=treat;Psix1=psix;  # save for bootstrap
 
   pi<-estimator.pi(y,delta,treat,x,psix)
