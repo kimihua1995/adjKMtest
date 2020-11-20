@@ -2,7 +2,7 @@
 \alias{el.est.table}
 \title{Table for Empirical Likelihood-Based (EL) Method}
 \description{Generate table for estimated survival probabilities by EL for treatment, control and their difference. Require \code{formattable} package to run.}
-\usage{}
+\usage{
 el.est.table(y,delta,treat,x,psix,t,Nboot=500)
 }
 \arguments{
