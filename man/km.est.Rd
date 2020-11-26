@@ -20,5 +20,12 @@ A list containing the following components:
 }
 \author{}
 \examples{
+library(survival)
+y <- as.matrix(gbsg$rfstime/(365.25/12))
+treat <- data.matrix(gbsg$hormon)
+delta <- as.matrix(gbsg$status)
+t <- seq(0,80,2)
+
+km.est(y=y,delta=delta,treat=treat,treat.select=1,t=t)
 }
 \keyword{}
