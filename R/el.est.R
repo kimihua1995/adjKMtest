@@ -132,7 +132,7 @@ el.est <- function(y,delta,treat,x,psix_moment=c("first","second"),treat.select,
   require(MASS)
   if (standardize) {x <- scale(x)}
   if (psix_moment == "first"){
-    pisx <- x
+    psix <- x
   }else if (psix_moment == "second"){
     p <- ncol(x)
     combb <- combn(p,2)
