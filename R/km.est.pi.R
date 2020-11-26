@@ -1,6 +1,6 @@
 # estimated S(t) and its standard deviation by IPTW
 
-km.est.pi<-function(y,delta,treat,x,treat.select,t)
+km.est.pi<-function(y,delta,treat,x,treat.select,t,standardize=FALSE)
   #  y: observed time;
   #  delta: indicator for event
   #  treat: indicator for treatment
@@ -9,6 +9,7 @@ km.est.pi<-function(y,delta,treat,x,treat.select,t)
   #  t: time points want to estimate (vector)
   #  return a list with S(t) and sd
 {
+  if (standardize) {x <- scale(x)}
   n=length(y)
   m=length(t)
   z0=y[delta==1]

@@ -1,10 +1,10 @@
 # generate the table with S(t) with sd at selected time points by IPTW
 #    for treatment group, control group, and their difference
 
-km.est.pi.table <- function(y,delta,treat,x,t){
+km.est.pi.table <- function(y,delta,treat,x,t,standardize=FALSE){
 
-  S1 <- km.est.pi(y,delta,treat,x,1,t)
-  S0 <- km.est.pi(y,delta,treat,x,0,t)
+  S1 <- km.est.pi(y,delta,treat,x,1,t,standardize)
+  S0 <- km.est.pi(y,delta,treat,x,0,t,standardize)
 
   S1.est <- S1$St; S1.sd <- S1$sd
   S0.est <- S0$St; S0.sd <- S0$sd

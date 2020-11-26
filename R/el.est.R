@@ -127,8 +127,19 @@ el.est.old <- function(y,delta,pi,t){
 
 ##########################################
 # estimate S(t) and standard deviation by EL
-el.est <- function(y,delta,treat,x,psix,treat.select,t,get.sd=TRUE,Nboot=500){
+el.est <- function(y,delta,treat,x,psix_moment=c("first","second"),treat.select,t,
+                   get.sd=TRUE,Nboot=500,standardize=FALSE){
   require(MASS)
+  if (standardize) {x <- scale(x)}
+  if (psix_moment == "first"){
+    pisx <- x
+  }else if (psix_moment == "second"){
+    p <- ncol(x)
+    combb <- combn(p,2)
+    res <- apply(x, 1, function(x) { apply(combb, 2, function(y) prod(x[y])) })
+    psix <- cbind(x^2, t(res))
+  }
+
   Y1=y;Delta1=delta;X1=x;Treat1=treat;Psix1=psix;  # save for bootstrap
 
   pi<-estimator.pi(y,delta,treat,x,psix)

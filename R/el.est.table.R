@@ -1,7 +1,19 @@
-boot.sd<-function(Y1,Delta1,X1,Treat1,Psix1,Nboot,wt,alpha=0.05)
+boot.sd<-function(Y1,Delta1,X1,Treat1,psix_moment=c("first","second"),
+                  Nboot,wt,standardize=FALSE,alpha=0.05)
 {#Y1=y;Delta1=delta;X1=x;Treat1=treat;Psix1=psix;
 
   require(MASS)
+  if (standardize) {X1 <- scale(X1)}
+  if (psix_moment == "first"){
+    Psix1 <- X1
+  }else if (psix_moment == "second"){
+    p <- ncol(X1)
+    combb <- combn(p,2)
+    res <- apply(X1, 1, function(x) { apply(combb, 2, function(y) prod(x[y])) })
+    Psix1 <- cbind(X1, X1^2, t(res))
+  }
+
+
   s1=NULL;s0=NULL
   n=length(Y1)
   for (i in 1:Nboot)
@@ -37,15 +49,16 @@ boot.sd<-function(Y1,Delta1,X1,Treat1,Psix1,Nboot,wt,alpha=0.05)
 # generate the table with S(t) with sd at selected time points by EL
 #    for treatment group, control group, and their difference
 
-el.est.table <- function(y,delta,treat,x,psix,t,Nboot=500){
+el.est.table <- function(y,delta,treat,x,psix_moment=c("first","second"),t,
+                         Nboot=500,standardize=FALSE){
 
-  S1 <- el.est(y,delta,treat,x,psix,1,t,TRUE,Nboot)
-  S0 <- el.est(y,delta,treat,x,psix,0,t,TRUE,Nboot)
+  S1 <- el.est(y,delta,treat,x,psix_moment,1,t,TRUE,Nboot,standardize)
+  S0 <- el.est(y,delta,treat,x,psix_moment,0,t,TRUE,Nboot,standardize)
 
   S1.est <- S1$St; S1.sd <- S1$sd
   S0.est <- S0$St; S0.sd <- S0$sd
 
-  Dif.est <- S1.est - S0.est; Dif.sd <- boot.sd(y,delta,x,treat,psix,Nboot,t)$sd
+  Dif.est <- S1.est - S0.est; Dif.sd <- boot.sd(y,delta,x,treat,psix_moment,Nboot,t,standardize)$sd
 
   table.est <- round(rbind(S1.est,S0.est,Dif.est),3)
   table.sd <- round(rbind(S1.sd,S0.sd,Dif.sd),3)
